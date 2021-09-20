@@ -11,7 +11,6 @@ export interface HitCounterProps {
 export class HitCounter extends cdk.Construct {
   public readonly handler: lambda.Function;
 
-  // props: データを渡す
   constructor(scope: cdk.Construct, id: string, props: HitCounterProps) {
     super(scope, id);
 
@@ -28,5 +27,9 @@ export class HitCounter extends cdk.Construct {
         HITS_TABLE_NAME: table.tableName
       }
     });
+
+    table.grantReadWriteData(this.handler);
+
+    props.downstream.grantInvoke(this.handler);
   }
 }
